@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "duzinho_teste_bot"
+version = "0.1.0"
+description = ""
+authors = ["Regy Eduardo <regyeduardo@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-decouple = "^3.6"
+python-telegram-bot = "^13.11"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+prospector = {extras = ["with_everything"], version = "^1.6.0"}
+pylint = "2.11.0"
+isort = "^5.10.1"
+blue = "^0.7.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

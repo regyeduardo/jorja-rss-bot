@@ -1,0 +1,15 @@
+# Files
+.bandit.yaml
+.env
+.prospector.yaml
+.pylintrc
+*.bak
+db.sqlite3
+Makefile
+poetry.lock
+
+# Folders
+.vscode/
+__pycache__/
+.tmp.drivedownload
+.tmp.driveupload
