@@ -1,7 +1,8 @@
 """Command wesley."""
 import random
 
-from . import CallbackContext, Update
+from telegram import Update
+from telegram.ext import CallbackContext
 
 
 def wesley(update: Update, context: CallbackContext):  # nosec

@@ -1,5 +1,6 @@
 """Command hello."""
-from . import CallbackContext, Update
+from telegram import Update
+from telegram.ext import CallbackContext
 
 
 def hello(update: Update, context: CallbackContext):

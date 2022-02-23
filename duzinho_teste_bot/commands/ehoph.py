@@ -1,5 +1,6 @@
 """Command ehoph."""
-from . import CallbackContext, Update
+from telegram import Update
+from telegram.ext import CallbackContext
 
 
 def ehoph(update: Update, context: CallbackContext):
