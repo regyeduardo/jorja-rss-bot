@@ -1,5 +1,5 @@
 """Users model."""
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, String  # Integer
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy_utils import TimezoneType
@@ -7,7 +7,7 @@ from sqlalchemy_utils import TimezoneType
 from .. import Base
 
 
-class User(Base):
+class User(Base):  # pylint: disable=too-few-public-methods
     """Users model."""
 
     __tablename__ = 'users'

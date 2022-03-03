@@ -1,6 +1,6 @@
 """Callback function."""
 import pytz
-from telegram import ParseMode, Update
+from telegram import Update  # ParseMode
 from telegram.ext import CallbackContext
 
 from ..database import SessionLocal, User
@@ -18,7 +18,8 @@ def responses(update: Update, context: CallbackContext) -> None:
     #     text='Fuso horario atualizado',
     #     parse_mode=ParseMode.MARKDOWN_V2,
     # )
-    id = update.effective_chat.id
+    print(context)
+    chat_id = update.effective_chat.id
     response = update.callback_query.data
     update.effective_message.delete()
     session = SessionLocal()
@@ -26,7 +27,7 @@ def responses(update: Update, context: CallbackContext) -> None:
     timezone = pytz.timezone(response)
 
     user = User()
-    user.id = id
+    user.id = chat_id
     user.language = 'pt-br'
     user.timezone = timezone
 

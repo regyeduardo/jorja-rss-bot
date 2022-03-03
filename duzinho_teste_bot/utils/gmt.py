@@ -1,29 +1,35 @@
-"""
-
-Este modulo contem metodos que trabalham?
-com fuso horarios em GMT.
-"""
+"""Este modulo contem metodos que trabalham. com fuso horarios em GMT."""
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 
 from .. import bot
 
 
-def get_correct_gmt(gmt: str) -> str:
+def get_correct_gmt(number: str) -> str:
     """
-    Recebe uma string que e um
-    numero em string e converte
-    em string com um mais (+) se
-    o numero for positivo.
+    Retorna um numero GMT correto.
+
+    Args:
+        number -- Um numero inteiro em string.
+
+    Returns:
+        number -- Caso o numero seja inteiro ira retorna-lo com um
+        (+) mais na frente e caso nao seja ira retornar ele mesmo.
     """
-    if int(gmt) > 0:
-        return f'+{gmt}'
-    return gmt
+    if int(number) > 0:
+        return f'+{number}'
+    return number
 
 
 def return_gmt_buttons(
     chat_id: int, text: str = 'Escolha seu fuso horario'
 ) -> None:
-    """Return button."""
+    """
+    Apresenta as opcoes de fuso-horario no chat.
+
+    Args:
+        chat_id -- A identificacao do chat.
+        text -- O texto que sera apresentado antes da lista de botoes.
+    """
     buttons = [
         [
             InlineKeyboardButton(

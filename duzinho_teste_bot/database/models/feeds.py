@@ -7,11 +7,10 @@ from sqlalchemy_utils import URLType
 from .. import Base
 
 
-class Feed(Base):
+class Feed(Base):  # pylint: disable=too-few-public-methods
     """Feed model."""
 
     __tablename__ = 'feeds'
-    # pylint: disable=too-few-public-methods
 
     id = Column(Integer, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
