@@ -2,10 +2,8 @@
 from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext
 
-from ..database.db import SessionLocal
-from ..database.models.users import User
-from ..utils import flags
-from ..utils.language import get_default_error_message, get_successful_update
+from ..database import SessionLocal, User
+from ..utils import flags, get_language_texts
 
 
 def echo(update: Update, context: CallbackContext):
@@ -28,17 +26,18 @@ def echo(update: Update, context: CallbackContext):
         else:
             user.language = 'en'
 
+        lang = get_language_texts(user.language)(user)
         try:
             session.add(user)
             session.commit()
-            text = get_successful_update(user.language)
+            text = lang.default_successful_updated
             context.bot.send_message(
                 chat_id, text, reply_markup=ReplyKeyboardRemove()
             )
         except:  # pylint: disable=bare-except
-            text = get_default_error_message(user.language)
+            text = lang.default_error
             context.bot.send_message(chat_id, text)
 
-    else:
-        text = f'Falou: {update.message.text}?'
-        context.bot.send_message(chat_id=chat_id, text=text)
+    # else:
+    #     text = f'Falou: {update.message.text}?'
+    #     context.bot.send_message(chat_id=chat_id, text=text)

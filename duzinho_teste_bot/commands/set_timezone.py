@@ -3,18 +3,8 @@ import pytz
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
 
-from ..database.db import SessionLocal
-from ..database.models.users import User
-from ..utils.language import (get_default_error_message,
-                              get_help_set_timezone_command,
-                              get_successful_update)
-
-# def set_timezone(update: Update, context: CallbackContext):
-#     """Return message for set_timezone command."""
-#     print(context)
-#     chat_id = update.effective_chat.id
-#     return_gmt_buttons(chat_id=chat_id)
-#     update.effective_message.delete()
+from ..database import SessionLocal, User
+from ..utils import get_language_texts
 
 
 def set_timezone(update: Update, context: CallbackContext) -> None:
@@ -28,9 +18,10 @@ def set_timezone(update: Update, context: CallbackContext) -> None:
     chat_id = str(update.effective_chat.id)
     session = SessionLocal()
     user = session.query(User).filter(User.id == chat_id).first()
+    lang = get_language_texts(user.language)(user)
 
     if not context.args:
-        text = get_help_set_timezone_command(user.language)
+        text = lang.help_set_timezone
         context.bot.send_message(
             chat_id, text, parse_mode=ParseMode.MARKDOWN_V2
         )
@@ -41,11 +32,11 @@ def set_timezone(update: Update, context: CallbackContext) -> None:
         try:
             session.add(user)
             session.commit()
-            text = get_successful_update(user.language)
+            text = lang.default_successful_updated
             context.bot.send_message(chat_id, text)
         except:  # pylint: disable=bare-except
-            text = get_default_error_message(user.language)
+            text = lang.default_error
             context.bot.send_message(chat_id, text)
     else:
-        text = get_default_error_message(user.language)
+        text = lang.default_error
         context.bot.send_message(chat_id, text)
