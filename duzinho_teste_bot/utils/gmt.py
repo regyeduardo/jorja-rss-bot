@@ -1,7 +1,7 @@
 """Este modulo contem metodos que trabalham. com fuso horarios em GMT."""
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 
-from .. import bot
+from duzinho_teste_bot import bot
 
 
 def get_correct_gmt(number: str) -> str:

@@ -2,8 +2,8 @@
 from telegram import KeyboardButton, ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
-from ..database import SessionLocal, User
-from ..utils import flags, get_language_texts
+from duzinho_teste_bot.database import SessionLocal, User
+from duzinho_teste_bot.utils import flags, get_language_texts
 
 
 def set_language(update: Update, context: CallbackContext) -> None:
@@ -17,6 +17,7 @@ def set_language(update: Update, context: CallbackContext) -> None:
     chat_id = str(update.effective_chat.id)
     session = SessionLocal()
     user = session.query(User).filter(User.id == chat_id).first()
+    session.close()
     lang = get_language_texts(user.language)(user)
 
     text = lang.choose_your_language

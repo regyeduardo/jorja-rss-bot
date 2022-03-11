@@ -7,8 +7,8 @@ import feedparser
 from telegram import Update
 from telegram.ext import CallbackContext
 
-from ...database import SessionLocal, Subscription, User
-from ...utils import get_language_texts
+from duzinho_teste_bot.database import SessionLocal, Subscription, User
+from duzinho_teste_bot.utils import get_language_texts
 
 # import pytz
 
@@ -24,6 +24,7 @@ def add(update: Update, context: CallbackContext):
     chat_id = str(update.effective_chat.id)
     session = SessionLocal()
     user = session.query(User).filter(User.id == chat_id).first()
+    session.close()
     lang = get_language_texts(user.language)(user)
 
     if not context.args:
@@ -68,7 +69,9 @@ def add(update: Update, context: CallbackContext):
 
                     subs.datetime_last_post = last_post
 
+                session = SessionLocal()
                 session.add(subs)
                 session.commit()
+                session.close()
                 text = lang.default_successful_updated
                 context.bot.send_message(chat_id, text)

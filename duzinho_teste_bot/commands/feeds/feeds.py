@@ -3,8 +3,8 @@ from telegram import Update
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext
 
-from ...database import SessionLocal, Subscription, User
-from ...utils import get_language_texts
+from duzinho_teste_bot.database import SessionLocal, Subscription, User
+from duzinho_teste_bot.utils import get_language_texts
 
 
 def feeds(update: Update, context: CallbackContext):
@@ -23,6 +23,7 @@ def feeds(update: Update, context: CallbackContext):
         .filter(Subscription.user_id == chat_id)
         .all()
     )
+    session.close()
     text = ''
     for sub in subs:
         added = sub.created_at.astimezone(user.timezone).strftime(

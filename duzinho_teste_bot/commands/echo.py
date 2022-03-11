@@ -2,8 +2,8 @@
 from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext
 
-from ..database import SessionLocal, User
-from ..utils import flags, get_language_texts
+from duzinho_teste_bot.database import SessionLocal, User
+from duzinho_teste_bot.utils import flags, get_language_texts
 
 
 def echo(update: Update, context: CallbackContext):
@@ -30,6 +30,7 @@ def echo(update: Update, context: CallbackContext):
         try:
             session.add(user)
             session.commit()
+            session.close()
             text = lang.default_successful_updated
             context.bot.send_message(
                 chat_id, text, reply_markup=ReplyKeyboardRemove()

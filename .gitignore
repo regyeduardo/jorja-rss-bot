@@ -13,3 +13,4 @@ poetry.lock
 __pycache__/
 .tmp.drivedownload
 .tmp.driveupload
+.teste/

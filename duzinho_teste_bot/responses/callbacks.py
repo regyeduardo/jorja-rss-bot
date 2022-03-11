@@ -3,7 +3,7 @@ import pytz
 from telegram import Update  # ParseMode
 from telegram.ext import CallbackContext
 
-from ..database import SessionLocal, User
+from duzinho_teste_bot.database import SessionLocal, User
 
 
 def responses(update: Update, context: CallbackContext) -> None:
@@ -33,3 +33,4 @@ def responses(update: Update, context: CallbackContext) -> None:
 
     session.add(user)
     session.commit()
+    session.close()

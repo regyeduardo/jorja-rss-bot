@@ -3,8 +3,8 @@ import pytz
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
 
-from ..database import SessionLocal, User
-from ..utils import get_language_texts
+from duzinho_teste_bot.database import SessionLocal, User
+from duzinho_teste_bot.utils import get_language_texts
 
 
 def set_timezone(update: Update, context: CallbackContext) -> None:
@@ -32,6 +32,7 @@ def set_timezone(update: Update, context: CallbackContext) -> None:
         try:
             session.add(user)
             session.commit()
+            session.close()
             text = lang.default_successful_updated
             context.bot.send_message(chat_id, text)
         except:  # pylint: disable=bare-except

@@ -2,8 +2,8 @@
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
 
-from ..database import SessionLocal, User
-from ..utils import get_language_texts
+from duzinho_teste_bot.database import SessionLocal, User
+from duzinho_teste_bot.utils import get_language_texts
 
 
 def start(update: Update, context: CallbackContext):
@@ -11,6 +11,7 @@ def start(update: Update, context: CallbackContext):
     session = SessionLocal()
     chat_id = str(update.effective_chat.id)
     user = session.query(User).filter(User.id == chat_id).first()
+    session.close()
 
     if not user:
         user = User()
@@ -26,8 +27,10 @@ def start(update: Update, context: CallbackContext):
         lang = get_language_texts(user.language)(user)
 
         try:
+            session = SessionLocal()
             session.add(user)
             session.commit()
+            session.close()
             text = lang.user_data
 
             context.bot.send_message(

@@ -2,10 +2,10 @@
 from telegram.ext import (CallbackQueryHandler, CommandHandler, Filters,
                           MessageHandler, Updater)
 
-from .. import API_KEY
-from ..commands import (add, delete, echo, feeds, set_language, set_timezone,
-                        settings, start)
-from ..responses import responses
+from duzinho_teste_bot import API_KEY
+from duzinho_teste_bot.commands import (add, delete, echo, feeds, set_language,
+                                        set_timezone, settings, start)
+from duzinho_teste_bot.responses import responses
 
 updater = Updater(token=API_KEY, use_context=True)
 dispatcher = updater.dispatcher
