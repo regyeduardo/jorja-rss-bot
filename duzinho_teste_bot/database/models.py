@@ -49,4 +49,12 @@ class Subscription(Base):
     user = relationship('User', back_populates='subscriptions')
 
     def __getitem__(self, item):
+        """_summary_
+
+        Args:
+            item (User): An unique user.
+
+        Returns:
+            any: An user.
+        """
         return self.user_id[item]

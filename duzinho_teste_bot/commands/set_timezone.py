@@ -12,8 +12,8 @@ def set_timezone(update: Update, context: CallbackContext) -> None:
     Atualiza o fuso-horario do usuario.
 
     Args:
-        update -- Tipo Update do pacote telegram.
-        context -- Tipo CallbackContext do pacote telegram.ext.
+        update (Update) -- Tipo Update do pacote telegram.
+        context (CallbackContext) -- Tipo CallbackContext do pacote telegram.ext.
     """
     chat_id = str(update.effective_chat.id)
     session = SessionLocal()

@@ -9,10 +9,10 @@ def get_correct_gmt(number: str) -> str:
     Retorna um numero GMT correto.
 
     Args:
-        number -- Um numero inteiro em string.
+        number (str) -- Um numero inteiro em string.
 
     Returns:
-        number -- Caso o numero seja inteiro ira retorna-lo com um
+        number (str) -- Caso o numero seja inteiro ira retorna-lo com um
         (+) mais na frente e caso nao seja ira retornar ele mesmo.
     """
     if int(number) > 0:
@@ -27,8 +27,8 @@ def return_gmt_buttons(
     Apresenta as opcoes de fuso-horario no chat.
 
     Args:
-        chat_id -- A identificacao do chat.
-        text -- O texto que sera apresentado antes da lista de botoes.
+        chat_id (int) -- A identificacao do chat.
+        text (str) -- O texto que sera apresentado antes da lista de botoes.
     """
     buttons = [
         [
