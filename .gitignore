@@ -1,0 +1,8 @@
+.bandit.yaml
+.env
+.prospector.yaml
+.pylintrc
+.teste/
+Makefile
+duzinho_teste_bot/
+poetry.lock
