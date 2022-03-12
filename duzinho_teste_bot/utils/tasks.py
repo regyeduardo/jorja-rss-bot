@@ -10,6 +10,7 @@ from time import mktime
 import feedparser
 import pytz
 from decouple import config
+from sqlalchemy.orm.exc import StaleDataError
 from telegram import ParseMode
 from telegram.error import BadRequest
 
@@ -66,8 +67,12 @@ def check_subs(subs, user):
                 sub.datetime_last_post = feed_last_post
                 session = SessionLocal()
                 session.add(sub)
-                session.commit()
-                session.close()
+                try:
+                    session.commit()
+                    session.close()
+                except StaleDataError:
+                    session.close()
+                    continue
 
                 timezone = pytz.timezone(str(user.timezone))
 

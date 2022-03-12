@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "duzinho_teste_bot"
-version = "0.1.2"
+version = "0.1.3"
 description = "Bot Rss for Telegram"
 authors = ["Regy Eduardo <regyeduardo@gmail.com>"]
 
