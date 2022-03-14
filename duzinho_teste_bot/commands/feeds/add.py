@@ -1,14 +1,13 @@
 """Add command."""
 
-from datetime import datetime
-from time import mktime
 
 import feedparser
+from sqlalchemy.exc import IntegrityError
 from telegram import Update
 from telegram.ext import CallbackContext
 
-from duzinho_teste_bot.database import SessionLocal, Subscription, User
-from duzinho_teste_bot.utils import get_language_texts
+from duzinho_teste_bot.database import SessionLocal, User
+from duzinho_teste_bot.utils import add_feed, get_language_texts
 
 # import pytz
 
@@ -32,46 +31,18 @@ def add(update: Update, context: CallbackContext):
         context.bot.send_message(chat_id, text)
     else:
         feed = context.args[0]
-        has_feed = (
-            session.query(Subscription)
-            .filter(Subscription.user_id == chat_id)
-            .filter(Subscription.url == feed)
-            .scalar()
-        )
 
-        if has_feed:
-            text = lang.has_feed
-            context.bot.send_message(chat_id, text)
-        else:
+        try:
             request = feedparser.parse(feed)
 
             if request.bozo:
                 text = lang.invalid_feed
                 context.bot.send_message(chat_id, text)
             else:
-                subs = Subscription()
-                subs.url = feed
-                subs.user_id = chat_id
-
-                try:
-                    last_post = datetime.strptime(
-                        request.entries[0].published,
-                        '%a, %d %b %Y %H:%M:%S %z',
-                    )
-                    subs.datetime_last_post = last_post
-                except ValueError:
-                    parsed = request.entries[0].published_parsed
-                    last_post = datetime.fromtimestamp(mktime(parsed))
-
-                    # if not last_post.tzinfo:
-                    #     timezone = pytz.timezone('GMT')
-                    #     last_post = timezone.localize(last_post)
-
-                    subs.datetime_last_post = last_post
-
-                session = SessionLocal()
-                session.add(subs)
-                session.commit()
-                session.close()
+                add_feed(request, chat_id)
                 text = lang.default_successful_updated
                 context.bot.send_message(chat_id, text)
+
+        except IntegrityError:
+            text = lang.has_feed
+            context.bot.send_message(chat_id, text)

@@ -17,6 +17,8 @@ from telegram.error import BadRequest
 from duzinho_teste_bot import bot
 from duzinho_teste_bot.database import SessionLocal, Subscription, User
 
+from . import parse_md
+
 # from sqlalchemy.exc import TimeoutError
 
 
@@ -50,7 +52,7 @@ def check_subs(subs, user):
 
     Args:
         subs (Subscription): Todos os feeds do usuario.
-        user (User): Usuario atual..
+        user (User): Usuario atual.
     """
     for sub in subs:
         sub_last_post = sub.datetime_last_post
@@ -110,46 +112,6 @@ def check_subs(subs, user):
                             send_email_error(error, text)
                             print(error)
                             print(text)
-
-
-def parse_md(text: str) -> str:
-    """Adiciona caracteres de escape nos caracteres protegidos.
-
-    Args:
-        text (str): Texto sem parse.
-
-    Returns:
-        str: Texto com parse.
-    """
-    special = [
-        '~',
-        '`',
-        '>',
-        '+',
-        '-',
-        '=',
-        '|',
-        '{',
-        '}',
-        '.',
-        '!',
-        '[',
-        ']',
-        '(',
-        ')',
-        '*',
-        '#',
-        '_',
-    ]
-
-    formated_text = ''
-    for char in text:
-        if char in special:
-            formated_text += f'\\{char}'
-        else:
-            formated_text += f'{char}'
-
-    return formated_text
 
 
 def send_email_error(error, message) -> None:

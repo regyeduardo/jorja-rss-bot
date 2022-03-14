@@ -1,6 +1,7 @@
 """ "Delete command."""
 
 
+from sqlalchemy.orm.exc import UnmappedInstanceError
 from telegram import Update
 from telegram.ext import CallbackContext
 
@@ -24,38 +25,21 @@ def delete(update: Update, context: CallbackContext) -> None:
         text = lang.help_delete
         context.bot.send_message(chat_id, text)
     else:
+        feed_url = context.args[0]
 
-        session = SessionLocal()
-
-        feed = context.args[0]
-
-        has_feed = (
-            session.query(Subscription)
-            .filter(Subscription.user_id == chat_id)
-            .filter(Subscription.url == feed)
-            .scalar()
-        )
-        session.close()
-
-        if has_feed:
+        try:
             session = SessionLocal()
-            subs = (
+            sub = (
                 session.query(Subscription)
                 .filter(Subscription.user_id == chat_id)
-                .filter(Subscription.url == feed)
+                .filter(Subscription.url == feed_url)
                 .first()
             )
-            try:
-                text = lang.default_successful_updated
-                session.delete(subs)
-                session.commit()
-                session.close()
-                context.bot.send_message(chat_id, text)
-            except:  # pylint: disable = bare-except
-                text = lang.default_error
-                context.bot.send_message(chat_id, text)
-                session.close()
-        else:
+            session.delete(sub)
+            session.commit()
             session.close()
+            text = lang.default_successful_updated
+            context.bot.send_message(chat_id, text)
+        except UnmappedInstanceError:
             text = lang.cannot_delete
             context.bot.send_message(chat_id, text)
