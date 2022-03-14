@@ -1,1 +1,1 @@
-git+https://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@github.com/regyeduardo/rss-bot.git@0.1.4
+git+https://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@github.com/regyeduardo/rss-bot.git@0.1.5
