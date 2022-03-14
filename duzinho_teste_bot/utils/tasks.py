@@ -62,8 +62,21 @@ def check_subs(subs, user):
         if feed.bozo:
             bot.send_message(user.id, f'Feed {sub.url} inválido')
         else:
-            parsed = feed.entries[0].published_parsed
-            feed_last_post = datetime.fromtimestamp(mktime(parsed))
+            feed_last_post = None
+            try:
+                feed_last_post = datetime.strptime(
+                    feed.entries[0].published,
+                    '%a, %d %b %Y %H:%M:%S',
+                )
+            except ValueError:
+                parsed = feed.entries[0].published_parsed
+                feed_last_post = datetime.fromtimestamp(mktime(parsed))
+            except AttributeError:
+                parsed = feed.updated_parsed
+                feed_last_post = datetime.fromtimestamp(mktime(parsed))
+
+            # parsed = feed.entries[0].published_parsed
+            # feed_last_post = datetime.fromtimestamp(mktime(parsed))
 
             if sub_last_post < feed_last_post:
                 sub.datetime_last_post = feed_last_post
