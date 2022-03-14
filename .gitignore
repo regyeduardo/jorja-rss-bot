@@ -6,3 +6,5 @@
 Makefile
 duzinho_teste_bot/
 poetry.lock
+.vscode/
+__pycache__/
