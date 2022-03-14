@@ -5,10 +5,11 @@ import feedparser
 # import xml.etree.ElementTree as ET
 # from xml.etree.ElementTree import ParseError
 from defusedxml.ElementTree import ParseError, parse
-from sqlalchemy.exc import IntegrityError
+# from sqlalchemy.exc import IntegrityError
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
 
+from duzinho_teste_bot.database import SessionLocal, Subscription
 from duzinho_teste_bot.utils import add_feed, parse_md
 
 
@@ -55,11 +56,20 @@ def callback_import_command(update: Update, context: CallbackContext) -> None:
                 categories['invalid'].update({title: url})
                 continue
 
-            try:
+            session = SessionLocal()
+            has_feed = (
+                session.query(Subscription)
+                .filter(Subscription.user_id == chat_id)
+                .filter(Subscription.url == url)
+                .scalar()
+            )
+            session.close()
+            if not has_feed:
                 add_feed(request, chat_id)
                 categories['added'].update({title: url})
-            except IntegrityError:
+            else:
                 categories['repeated'].update({title: url})
+
     except ParseError:
         context.bot.send_message(chat_id, 'Arquivo invalido')
 

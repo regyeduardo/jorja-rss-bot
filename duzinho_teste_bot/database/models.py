@@ -39,7 +39,7 @@ class Subscription(Base):
     __tablename__ = 'subscriptions'
     id = Column(Integer, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
-    url = Column(URLType, nullable=False, unique=True)
+    url = Column(URLType, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True),
         nullable=False,

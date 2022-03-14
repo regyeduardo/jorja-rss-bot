@@ -15,7 +15,6 @@ def insert_title():
     session = SessionLocal()
     users = session.query(User).all()
     session.close()
-
     for user in users:
         session = SessionLocal()
         subs = (
@@ -24,7 +23,6 @@ def insert_title():
             .all()
         )
         session.close()
-
         if subs:
             for sub in subs:
                 if not sub.title:
@@ -38,3 +36,6 @@ def insert_title():
                     session.close()
 
 # insert_title()
+
+# engine.execute('ALTER TABLE subscriptions ADD CONSTRAINT url_unique UNIQUE (url)'
+# engine.execute('ALTER TABLE subscriptions DROP CONSTRAINT url_unique')

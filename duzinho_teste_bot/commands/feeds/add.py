@@ -2,11 +2,11 @@
 
 
 import feedparser
-from sqlalchemy.exc import IntegrityError
+# from sqlalchemy.exc import IntegrityError
 from telegram import Update
 from telegram.ext import CallbackContext
 
-from duzinho_teste_bot.database import SessionLocal, User
+from duzinho_teste_bot.database import SessionLocal, Subscription, User
 from duzinho_teste_bot.utils import add_feed, get_language_texts
 
 # import pytz
@@ -32,7 +32,16 @@ def add(update: Update, context: CallbackContext):
     else:
         feed = context.args[0]
 
-        try:
+        session = SessionLocal()
+        has_feed = (
+            session.query(Subscription)
+            .filter(Subscription.user_id == chat_id)
+            .filter(Subscription.url == feed)
+            .scalar()
+        )
+        session.close()
+
+        if not has_feed:
             request = feedparser.parse(feed)
 
             if request.bozo:
@@ -42,7 +51,7 @@ def add(update: Update, context: CallbackContext):
                 add_feed(request, chat_id)
                 text = lang.default_successful_updated
                 context.bot.send_message(chat_id, text)
-
-        except IntegrityError:
+        else:
+            # except IntegrityError:
             text = lang.has_feed
             context.bot.send_message(chat_id, text)
