@@ -17,8 +17,8 @@ class User(Base):  # pylint: disable=too-few-public-methods
 
     __tablename__ = 'users'
 
-    id = Column(String, primary_key=True, nullable=False)
-    language = Column(String, nullable=False)
+    id = Column(String(255), primary_key=True, nullable=False)
+    language = Column(String(255), nullable=False)
     timezone = Column(TimezoneType(backend='pytz'), nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=True, server_default=text('now()')
@@ -38,7 +38,7 @@ class Subscription(Base):
 
     __tablename__ = 'subscriptions'
     id = Column(Integer, primary_key=True, nullable=False)
-    title = Column(String, nullable=False)
+    title = Column(String(255), nullable=False)
     url = Column(URLType, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True),
@@ -46,7 +46,7 @@ class Subscription(Base):
         server_default=text('now()'),
     )
     datetime_last_post = Column(TIMESTAMP(timezone=False), nullable=True)
-    user_id = Column(String, ForeignKey('users.id'))
+    user_id = Column(String(255), ForeignKey('users.id'))
     user = relationship('User', back_populates='subscriptions')
 
     def __getitem__(self, item):
