@@ -8,3 +8,5 @@ duzinho_teste_bot/
 poetry.lock
 .vscode/
 __pycache__/
+.venv
+.python-version
